@@ -23,31 +23,29 @@ class LoginApi:
         )
         return response
 
-    def del_v1_account_login(self):
+    def del_v1_account_login(self, **kwargs):
         """
         logout as current user
         :return:
         """
 
-        payload = {}
-
         response = self.session.delete(
             url=f"{self.host}/v1/account/login",
-            json=payload
+            # json=payload
+            **kwargs
         )
         return response
 
-    def del_v1_account_login_all(self):
+    def del_v1_account_login_all(self, **kwargs):
         """
         logout from every device
         :return:
         """
 
-        payload = {}
-
         response = self.session.delete(
 
             url=f"{self.host}/v1/account/login/all",
-            json=payload
+            # json=payload
+            **kwargs
         )
         return response
