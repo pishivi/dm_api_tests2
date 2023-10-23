@@ -70,7 +70,7 @@ class AccountApi:
         )
         return response
 
-    def put_v1_account_token(self, **kwargs):
+    def put_v1_account_token(self, token, **kwargs):
         """
       Activate registered user
         :return:
@@ -80,7 +80,6 @@ class AccountApi:
 
         response = self.session.put(
             url=f"{self.host}/v1/account/{token}",
-            #json=payload
             **kwargs
         )
         return response

@@ -31,7 +31,6 @@ class LoginApi:
 
         response = self.session.delete(
             url=f"{self.host}/v1/account/login",
-            # json=payload
             **kwargs
         )
         return response
@@ -45,7 +44,6 @@ class LoginApi:
         response = self.session.delete(
 
             url=f"{self.host}/v1/account/login/all",
-            # json=payload
             **kwargs
         )
         return response
