@@ -83,12 +83,13 @@ class AccountApi:
         )
         return response
 
-    def get_v1_account(self):
+    def get_v1_account(self, **kwargs):
         """
         Get current user
         :return:
         """
         response = self.client.get(
-            path=f"/v1/account"
+            path=f"/v1/account",
+            **kwargs
         )
         return response
