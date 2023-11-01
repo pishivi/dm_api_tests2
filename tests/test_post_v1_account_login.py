@@ -2,8 +2,11 @@ import time
 from pprint import pprint
 
 import structlog
+
+from dm_api_account.models.registration_model import RegistrationModel
 from services.dm_api_account import DmApiAccount
 from services.mailhog import MailhogApi
+from dm_api_account.models.login_credentials_model import LoginCredentialModel
 
 structlog.configure(
     processors=[
@@ -12,19 +15,20 @@ structlog.configure(
     ]
 )
 
-login = "sjkdf"
-password = "kjabsdf"
-email = "kjslbf@mail.ru"
+
+# login = "sjkdf"
+# password = "kjabsdf"
+# email = "kjslbf@mail.ru"
 
 
 def test_post_v1_account_login():
     mailhog = MailhogApi(host="http://5.63.153.31:5025")
     api = DmApiAccount(host="http://5.63.153.31:5051")
-    json = {
-        "login": login,
-        "email": email,
-        "password": password,
-    }
+    json = RegistrationModel(
+        login="saafsdfsf1",
+        email="emaafddsdil1@mail.ru",
+        password="fasdff123123",
+    )
 
     response = api.account.post_v1_account(json=json)
     assert response.status_code == 201, f"Код ответа должен быть 201,а не {response.status_code}"
@@ -32,10 +36,10 @@ def test_post_v1_account_login():
     token = mailhog.get_token_from_last_email()
     response = api.account.put_v1_account_token(token=token)
 
-    json = {
-        "login": login,
-        "password": password,
-        "rememberMe": True
-    }
+    json = LoginCredentialModel(
+        login="saafsdfsf1",
+        password="fasdff123123",
+        rememberMe=True
+    )
     response = api.login.post_v1_account_login(json=json)
     assert response.status_code == 200, f"Код ответа должен быть 200,а не {response.status_code}"
