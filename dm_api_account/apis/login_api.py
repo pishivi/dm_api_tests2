@@ -3,7 +3,7 @@ from requests import session, Response
 
 from restclient.restclient import Restclient
 from ..models.login_credentials_model import LoginCredentialModel
-
+from ..models.general_error_model import GeneralErrorModel
 
 class LoginApi:
     def __init__(self, host, headers= None):
@@ -23,6 +23,7 @@ class LoginApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        LoginCredentialModel(**response.json())
         return response
 
     def del_v1_account_login(self, **kwargs):
@@ -35,6 +36,7 @@ class LoginApi:
             path=f"/v1/account/login",
             **kwargs
         )
+        GeneralErrorModel(**response.json())
         return response
 
     def del_v1_account_login_all(self, **kwargs):
@@ -48,4 +50,5 @@ class LoginApi:
             path=f"/v1/account/login/all",
             **kwargs
         )
+        GeneralErrorModel(**response.json())
         return response

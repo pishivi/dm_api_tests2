@@ -29,6 +29,7 @@ class AccountApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        RegistrationModel(**response.json())
         return response
 
     def post_v1_account_password(self, json: ResetPasswordModel, **kwargs) -> Response:
@@ -43,6 +44,7 @@ class AccountApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        ResetPasswordModel(**response.json())
         return response
 
     def put_v1_account_email(self, json: ChangeEmail, **kwargs) -> Response:
@@ -57,6 +59,7 @@ class AccountApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        ChangeEmail(**response.json())
         return response
 
     def put_v1_account_password(self, json: ChangePasswordModel, **kwargs) -> Response:
@@ -71,6 +74,7 @@ class AccountApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        ChangePasswordModel(**response.json())
         return response
 
     def put_v1_account_token(self, token: str, **kwargs):
@@ -95,4 +99,6 @@ class AccountApi:
             path=f"/v1/account",
             **kwargs
         )
+        UserDetailsEnvelop(**response.json())
+
         return response

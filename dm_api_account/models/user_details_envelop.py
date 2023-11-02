@@ -34,7 +34,7 @@ class ColorSchema(Enum):
     MODERN= "Modern"
     PALE = "Pale"
     CLASSIC = "Classic"
-    ClASSICPALE = "ClassicPale"
+    ClASSIC_PALE = "ClassicPale"
     NIGHT = "Night"
 
 class PagingSettings(BaseModel):
