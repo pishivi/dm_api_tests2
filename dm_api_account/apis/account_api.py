@@ -74,7 +74,7 @@ class AccountApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
-        ChangePasswordModel(**response.json())
+        UserEnvelopeModel(**response.json())
         return response
 
     def put_v1_account_token(self, token: str, **kwargs):
