@@ -1,13 +1,8 @@
-import requests
-from ..models.registration_model import RegistrationModel
-from ..models.change_password_model import ChangePasswordModel
-from ..models.reset_password_model import ResetPasswordModel
-from ..models.change_email_model import ChangeEmail
-from ..models.user_details_envelop import UserDetailsEnvelop
+from pydantic import BaseModel
 from requests import Response
-from requests import session
 from restclient.restclient import Restclient
-from dm_api_account.models.user_envelope_model import UserEnvelopeModel
+from ..models import *
+from ..utilities import validate_request_json
 
 
 class AccountApi:
@@ -17,7 +12,7 @@ class AccountApi:
         if headers:
             self.client.session.headers.update(headers)
 
-    def post_v1_account(self, json: RegistrationModel, **kwargs) -> Response:
+    def post_v1_account(self, json: Registration, **kwargs) -> Response:
         """
         Register new user
         :param json registration_model
@@ -26,13 +21,12 @@ class AccountApi:
 
         response = self.client.post(
             path=f"/v1/account",
-            json=json.model_dump(by_alias=True, exclude_none=True),
+            json=json.model_dump(),
             **kwargs
         )
-        RegistrationModel(**response.json())
         return response
 
-    def post_v1_account_password(self, json: ResetPasswordModel, **kwargs) -> Response:
+    def post_v1_account_password(self, json: ResetPassword, **kwargs) -> Response:
         """
         Reset registered user password
         :param json reset_password_model
@@ -41,10 +35,10 @@ class AccountApi:
 
         response = self.client.post(
             path=f"/v1/account/password",
-            json=json.model_dump(by_alias=True, exclude_none=True),
+            json=json.model_dump(),
             **kwargs
         )
-        ResetPasswordModel(**response.json())
+        UserEnvelope(**response.json())
         return response
 
     def put_v1_account_email(self, json: ChangeEmail, **kwargs) -> Response:
@@ -56,13 +50,13 @@ class AccountApi:
 
         response = self.client.put(
             path=f"/v1/account/email",
-            json=json.model_dump(by_alias=True, exclude_none=True),
+            json=json.model_dump(),
             **kwargs
         )
-        ChangeEmail(**response.json())
+        UserEnvelope(**response.json())
         return response
 
-    def put_v1_account_password(self, json: ChangePasswordModel, **kwargs) -> Response:
+    def put_v1_account_password(self, json: ChangePassword, **kwargs) -> Response:
         """
         Change registered user password
         :param json change_password_model
@@ -71,10 +65,10 @@ class AccountApi:
 
         response = self.client.put(
             path=f"/v1/account/password",
-            json=json.model_dump(by_alias=True, exclude_none=True),
+            json=validate_request_json(json),
             **kwargs
         )
-        UserEnvelopeModel(**response.json())
+        UserEnvelope(**response.json())
         return response
 
     def put_v1_account_token(self, token: str, **kwargs):
@@ -87,7 +81,7 @@ class AccountApi:
             path=f"/v1/account/{token}",
             **kwargs
         )
-        UserEnvelopeModel(**response.json())
+        UserEnvelope(**response.json())
         return response
 
     def get_v1_account(self, **kwargs):
@@ -99,6 +93,6 @@ class AccountApi:
             path=f"/v1/account",
             **kwargs
         )
-        UserDetailsEnvelop(**response.json())
+        UserDetailsEnvelope(**response.json())
 
         return response

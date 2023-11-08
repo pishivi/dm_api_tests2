@@ -1,18 +1,17 @@
-import requests
-from requests import session, Response
-
+from requests import Response
 from restclient.restclient import Restclient
-from ..models.login_credentials_model import LoginCredentialModel
-from ..models.general_error_model import GeneralErrorModel
+from ..models import *  # импортнул все модели из файла models -> __init__.py
+from ..utilities import validate_request_json
+
 
 class LoginApi:
-    def __init__(self, host, headers= None):
+    def __init__(self, host, headers=None):
         self.host = host
         self.client = Restclient(host=host, headers=headers)
         if headers:
             self.client.session.headers.update(headers)
 
-    def post_v1_account_login(self, json: LoginCredentialModel, **kwargs) -> Response:
+    def post_v1_account_login(self, json: LoginCredentials, **kwargs) -> Response:
         """
     Authenticate via credentials
         :return:
@@ -20,10 +19,10 @@ class LoginApi:
 
         response = self.client.post(
             path=f"/v1/account/login",
-            json=json.model_dump(by_alias=True, exclude_none=True),
+            json=json.model_dump(),
             **kwargs
         )
-        LoginCredentialModel(**response.json())
+        UserEnvelope(**response.json())
         return response
 
     def del_v1_account_login(self, **kwargs):
@@ -36,7 +35,7 @@ class LoginApi:
             path=f"/v1/account/login",
             **kwargs
         )
-        GeneralErrorModel(**response.json())
+        GeneralError(**response.json())
         return response
 
     def del_v1_account_login_all(self, **kwargs):
@@ -50,5 +49,5 @@ class LoginApi:
             path=f"/v1/account/login/all",
             **kwargs
         )
-        GeneralErrorModel(**response.json())
+        GeneralError(**response.json())
         return response

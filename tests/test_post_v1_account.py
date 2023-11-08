@@ -2,7 +2,7 @@ from services.dm_api_account import DmApiAccount
 from services.mailhog import MailhogApi
 import structlog
 import time
-from dm_api_account.models.registration_model import RegistrationModel
+from dm_api_account.models.registration_model import Registration
 
 structlog.configure(
     processors=[
@@ -14,10 +14,10 @@ structlog.configure(
 def test_post_v1_account():
     mailhog = MailhogApi(host="http://5.63.153.31:5025")
     api = DmApiAccount(host="http://5.63.153.31:5051")
-    json = RegistrationModel(
-        login="adf331122335",
-        email="fa33sdff325m@sdf.ru",
-        password="g1g2g5gp"
+    json = Registration(
+        login="a11d1f365",
+        email="2125m@sdf.ru",
+        password="g13g2g5gp"
     )
 
     response = api.account.post_v1_account(json=json)

@@ -1,11 +1,15 @@
+from __future__ import annotations
+from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Any
 
-from pydantic import BaseModel, StrictStr, Field, PastDate
+from pydantic import BaseModel, StrictStr, Extra, Field
 
 
+from model import UserRole
 
-class Roles(Enum):
+
+class UserRole(Enum):
     GUEST = "Guest"
     PLAYER = "Player"
     ADMINISTRATOR = "Administrator"
@@ -14,24 +18,38 @@ class Roles(Enum):
     SENIOR_MODERATOR = "SeniorModerator"
 
 class Rating(BaseModel):
-    enabled: bool
-    quality: int
-    quantity: int
+    class Config:
+        extra = Extra.forbid
 
+    enabled: Optional[bool] = Field(None, description='Rating participation flag')
+    quality: Optional[int] = Field(None, description='Quality rating')
+    quantity: Optional[int] = Field(None, description='Quantity rating')
 
 class User(BaseModel):
-    login: StrictStr
-    roles: List[Roles]
-    medium_picture_url: Optional[StrictStr] = Field(None, alias="mediumPictureUrl")
-    small_picture_url: Optional[StrictStr] = Field(None, alias="smallPictureUrl")
-    status: Optional[StrictStr] = Field(None)
-    rating: Rating
-    online: Optional[PastDate]= Field(None)
-    name: Optional[StrictStr]= Field(None)
-    location: Optional[StrictStr]= Field(None)
-    registration: Optional[PastDate]= Field(None)
+    class Config:
+        extra = Extra.forbid
+
+    login: Optional[StrictStr] = Field(None, description='Login')
+    roles: Optional[List[UserRole]] = Field(None, description='Roles')
+    medium_picture_url: Optional[StrictStr] = Field(
+        None, alias='mediumPictureUrl', description='Profile picture URL M-size'
+    )
+    small_picture_url: Optional[StrictStr] = Field(
+        None, alias='smallPictureUrl', description='Profile picture URL S-size'
+    )
+    status: Optional[StrictStr] = Field(None, description='User defined status')
+    rating: Optional[Rating] = None
+    online: Optional[datetime] = Field(None, description='Last seen online moment')
+    name: Optional[StrictStr] = Field(None, description='User real name')
+    location: Optional[StrictStr] = Field(None, description='User real location')
+    registration: Optional[datetime] = Field(
+        None, description='User registration moment'
+    )
 
 
-class UserEnvelopeModel(BaseModel):
-    resource: User
-    metadata: Optional[StrictStr]= Field(None)
+class UserEnvelope(BaseModel):
+    class Config:
+        extra = Extra.allow
+
+    resource: Optional[User] = None
+    metadata: Optional[Any] = Field(None, description='Additional metadata')

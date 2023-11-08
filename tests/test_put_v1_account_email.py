@@ -11,9 +11,9 @@ structlog.configure(
     ]
 )
 
-login = "adf331122335"
-email = "fa33sdff325m@sdf.ru"
-password = "g1g2g5gp"
+login = "a112122sdf122"
+email = "e1233663m123l1@mail.ru"
+password = "fa111231231"
 
 
 def test_put_v1_account_email():

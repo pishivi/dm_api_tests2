@@ -2,7 +2,7 @@ import time
 import structlog
 from services.dm_api_account import DmApiAccount
 from services.mailhog import MailhogApi
-from dm_api_account.models.user_envelope_model import UserEnvelopeModel
+from dm_api_account.models.user_envelope_model import UserEnvelope
 
 structlog.configure(
     processors=[
@@ -15,10 +15,10 @@ structlog.configure(
 def test_put_v1_account_token():
     mailhog = MailhogApi(host="http://5.63.153.31:5025")
     api = DmApiAccount(host="http://5.63.153.31:5051")
-    json = UserEnvelopeModel(
-        login= "1d2323e4as",
-        email= "chd32fsdfgm@sdf.ru",
-        password= "hopagghdfop"
+    json = UserEnvelope(
+        login= "ad1f365",
+        email= "25m@sdf.ru",
+        password= "g13g2g5gp"
     )
     token = mailhog.get_token_from_last_email()
     response = api.account.put_v1_account_token(token=token)
